@@ -1,16 +1,3 @@
-// iterators3.rs
-//
-// This is a bigger exercise than most of the others! You can do it! Here is
-// your mission, should you choose to accept it:
-// 1. Complete the divide function to get the first four tests to pass.
-// 2. Get the remaining tests to pass by completing the result_with_list and
-//    list_of_results functions.
-//
-// Execute `rustlings hint iterators3` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 #[derive(Debug, PartialEq, Eq)]
 pub enum DivisionError {
     NotDivisible(NotDivisibleError),
@@ -23,26 +10,35 @@ pub struct NotDivisibleError {
     divisor: i32,
 }
 
-// Calculate `a` divided by `b` if `a` is evenly divisible by `b`.
-// Otherwise, return a suitable error.
+// 实现除法逻辑：处理除零、无法整除、正常整除三种情况
 pub fn divide(a: i32, b: i32) -> Result<i32, DivisionError> {
-    todo!();
+    // 1. 优先处理除零错误
+    if b == 0 {
+        return Err(DivisionError::DivideByZero);
+    }
+    // 2. 检查是否能整除
+    if a % b != 0 {
+        return Err(DivisionError::NotDivisible(NotDivisibleError {
+            dividend: a,
+            divisor: b,
+        }));
+    }
+    // 3. 能整除则返回商
+    Ok(a / b)
 }
 
-// Complete the function and return a value of the correct type so the test
-// passes.
-// Desired output: Ok([1, 11, 1426, 3])
-fn result_with_list() -> () {
+// 收集所有除法结果为单个Result（全部成功返回Ok(Vec)，否则返回第一个错误）
+fn result_with_list() -> Result<Vec<i32>, DivisionError> {
     let numbers = vec![27, 297, 38502, 81];
-    let division_results = numbers.into_iter().map(|n| divide(n, 27));
+    // map处理每个元素的除法，collect自动合并为Result<Vec, E>
+    numbers.into_iter().map(|n| divide(n, 27)).collect()
 }
 
-// Complete the function and return a value of the correct type so the test
-// passes.
-// Desired output: [Ok(1), Ok(11), Ok(1426), Ok(3)]
-fn list_of_results() -> () {
+// 收集所有除法结果为Vec<Result>（保留每个元素的独立Result状态）
+fn list_of_results() -> Vec<Result<i32, DivisionError>> {
     let numbers = vec![27, 297, 38502, 81];
-    let division_results = numbers.into_iter().map(|n| divide(n, 27));
+    // map处理每个元素的除法，collect直接收集为Vec<Result>
+    numbers.into_iter().map(|n| divide(n, 27)).collect()
 }
 
 #[cfg(test)]
