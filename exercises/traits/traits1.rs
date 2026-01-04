@@ -1,26 +1,19 @@
-// traits1.rs
-//
-// Time to implement some traits! Your task is to implement the trait
-// `AppendBar` for the type `String`. The trait AppendBar has only one function,
-// which appends "Bar" to any object implementing this trait.
-//
-// Execute `rustlings hint traits1` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 trait AppendBar {
     fn append_bar(self) -> Self;
 }
 
 impl AppendBar for String {
-    // TODO: Implement `AppendBar` for type `String`.
+    // 实现append_bar方法：在字符串末尾追加"Bar"并返回新字符串
+    fn append_bar(self) -> Self {
+        // self是String类型，拼接"Bar"后返回新的String
+        self + "Bar"
+    }
 }
 
 fn main() {
     let s = String::from("Foo");
     let s = s.append_bar();
-    println!("s: {}", s);
+    println!("s: {}", s); // 输出：s: FooBar
 }
 
 #[cfg(test)]
