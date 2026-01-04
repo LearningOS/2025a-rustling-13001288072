@@ -1,14 +1,3 @@
-// try_from_into.rs
-//
-// TryFrom is a simple and safe type conversion that may fail in a controlled
-// way under some circumstances. Basically, this is the same as From. The main
-// difference is that this should return a Result type instead of the target
-// type itself. You can read more about it at
-// https://doc.rust-lang.org/std/convert/trait.TryFrom.html
-//
-// Execute `rustlings hint try_from_into` or use the `hint` watch subcommand for
-// a hint.
-
 use std::convert::{TryFrom, TryInto};
 
 #[derive(Debug, PartialEq)]
@@ -18,62 +7,84 @@ struct Color {
     blue: u8,
 }
 
-// We will use this error type for these `TryFrom` conversions.
 #[derive(Debug, PartialEq)]
 enum IntoColorError {
-    // Incorrect length of slice
+    // 切片长度错误
     BadLen,
-    // Integer conversion error
+    // 整数转换错误（值超出 0..=255 范围）
     IntConversion,
 }
 
-// I AM NOT DONE
+// 辅助函数：校验 i16 值是否能安全转换为 u8（0..=255）
+fn validate_rgb_value(val: i16) -> Result<u8, IntoColorError> {
+    if val >= 0 && val <= 255 {
+        Ok(val as u8)
+    } else {
+        Err(IntoColorError::IntConversion)
+    }
+}
 
-// Your task is to complete this implementation and return an Ok result of inner
-// type Color. You need to create an implementation for a tuple of three
-// integers, an array of three integers, and a slice of integers.
-//
-// Note that the implementation for tuple and array will be checked at compile
-// time, but the slice implementation needs to check the slice length! Also note
-// that correct RGB color values must be integers in the 0..=255 range.
-
-// Tuple implementation
+// 1. 元组 (i16, i16, i16) 实现 TryFrom
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
+    
     fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let red = validate_rgb_value(tuple.0)?;
+        let green = validate_rgb_value(tuple.1)?;
+        let blue = validate_rgb_value(tuple.2)?;
+        
+        Ok(Color { red, green, blue })
     }
 }
 
-// Array implementation
+// 2. 数组 [i16; 3] 实现 TryFrom
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
+    
     fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let red = validate_rgb_value(arr[0])?;
+        let green = validate_rgb_value(arr[1])?;
+        let blue = validate_rgb_value(arr[2])?;
+        
+        Ok(Color { red, green, blue })
     }
 }
 
-// Slice implementation
+// 3. 切片 &[i16] 实现 TryFrom
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
+    
     fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        // 第一步：校验切片长度是否为 3
+        if slice.len() != 3 {
+            return Err(IntoColorError::BadLen);
+        }
+        
+        // 第二步：校验每个值的范围并转换
+        let red = validate_rgb_value(slice[0])?;
+        let green = validate_rgb_value(slice[1])?;
+        let blue = validate_rgb_value(slice[2])?;
+        
+        Ok(Color { red, green, blue })
     }
 }
 
 fn main() {
-    // Use the `try_from` function
+    // 测试元组转换
     let c1 = Color::try_from((183, 65, 14));
-    println!("{:?}", c1);
+    println!("{:?}", c1); // Ok(Color { red: 183, green: 65, blue: 14 })
 
-    // Since TryFrom is implemented for Color, we should be able to use TryInto
+    // 测试数组转换（TryInto）
     let c2: Result<Color, _> = [183, 65, 14].try_into();
-    println!("{:?}", c2);
+    println!("{:?}", c2); // Ok(Color { red: 183, green: 65, blue: 14 })
 
+    // 测试切片转换
     let v = vec![183, 65, 14];
-    // With slice we should use `try_from` function
     let c3 = Color::try_from(&v[..]);
-    println!("{:?}", c3);
-    // or take slice within round brackets and use TryInto
+    println!("{:?}", c3); // Ok(Color { red: 183, green: 65, blue: 14 })
+    
     let c4: Result<Color, _> = (&v[..]).try_into();
-    println!("{:?}", c4);
+    println!("{:?}", c4); // Ok(Color { red: 183, green: 65, blue: 14 })
 }
 
 #[cfg(test)]
