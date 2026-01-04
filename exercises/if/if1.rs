@@ -1,14 +1,5 @@
-// if1.rs
-//
-// Execute `rustlings hint if1` or use the `hint` watch subcommand for a hint.
-
-
 pub fn bigger(a: i32, b: i32) -> i32 {
-    // Complete this function to return the bigger number!
-    // Do not use:
-    // - another function call
-    // - additional variables
-
+    // 通过 if-else 直接比较并返回更大的数值，满足无额外变量/函数调用的要求
     if a > b {
         a
     } else {
@@ -16,7 +7,6 @@ pub fn bigger(a: i32, b: i32) -> i32 {
     }
 }
 
-// Don't mind this for now :)
 #[cfg(test)]
 mod tests {
     use super::*;
