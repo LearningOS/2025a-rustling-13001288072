@@ -1,23 +1,19 @@
-// strings3.rs
-//
-// Execute `rustlings hint strings3` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 fn trim_me(input: &str) -> String {
-    // TODO: Remove whitespace from both ends of a string!
-    ???
+    // 使用trim()方法去除字符串两端的空白字符，再转换为String
+    input.trim().to_string()
 }
 
 fn compose_me(input: &str) -> String {
-    // TODO: Add " world!" to the string! There's multiple ways to do this!
-    ???
+    // 方法1：使用format!宏拼接字符串（推荐，简洁高效）
+    format!("{} world!", input)
+    
+    // 方法2（备选）：先转String再拼接
+    // input.to_string() + " world!"
 }
 
 fn replace_me(input: &str) -> String {
-    // TODO: Replace "cars" in the string with "balloons"!
-    ???
+    // 使用replace()方法替换指定子串，返回新的String
+    input.replace("cars", "balloons")
 }
 
 #[cfg(test)]
