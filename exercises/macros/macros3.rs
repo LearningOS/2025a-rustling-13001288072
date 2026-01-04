@@ -1,19 +1,15 @@
-// macros3.rs
-//
-// Make me compile, without taking the macro out of the module!
-//
-// Execute `rustlings hint macros3` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 mod macros {
+    // 导出宏，使其能在模块外部被调用
+    #[macro_export]
     macro_rules! my_macro {
         () => {
             println!("Check out my macro!");
         };
     }
 }
+
+// 引入模块内的宏（或通过use macros::my_macro;也可）
+use macros::my_macro;
 
 fn main() {
     my_macro!();
