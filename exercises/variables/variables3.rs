@@ -1,10 +1,6 @@
-// variables3.rs
-//
-// Execute `rustlings hint variables3` or use the `hint` watch subcommand for a
-// hint.
-
-
 fn main() {
+    // 1. 声明变量x，显式指定类型为i32，绑定值10
     let x: i32 = 10;
+    // 2. 打印变量x的值，{}占位符会替换为x的实际值
     println!("Number {}", x);
 }
