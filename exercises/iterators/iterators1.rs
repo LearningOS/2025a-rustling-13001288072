@@ -1,25 +1,16 @@
-// iterators1.rs
-//
-// When performing operations on elements within a collection, iterators are
-// essential. This module helps you get familiar with the structure of using an
-// iterator and how to go through elements within an iterable collection.
-//
-// Make me compile by filling in the `???`s
-//
-// Execute `rustlings hint iterators1` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 fn main() {
     let my_fav_fruits = vec!["banana", "custard apple", "avocado", "peach", "raspberry"];
 
-    let mut my_iterable_fav_fruits = ???;   // TODO: Step 1
+    // Step 1: 获取 Vec 的迭代器（iter() 生成不可变引用的迭代器）
+    let mut my_iterable_fav_fruits = my_fav_fruits.iter();
 
     assert_eq!(my_iterable_fav_fruits.next(), Some(&"banana"));
-    assert_eq!(my_iterable_fav_fruits.next(), ???);     // TODO: Step 2
+    // Step 2: 迭代器下一个元素是 "custard apple" 的引用
+    assert_eq!(my_iterable_fav_fruits.next(), Some(&"custard apple"));
     assert_eq!(my_iterable_fav_fruits.next(), Some(&"avocado"));
-    assert_eq!(my_iterable_fav_fruits.next(), ???);     // TODO: Step 3
+    // Step 3: 迭代器下一个元素是 "peach" 的引用
+    assert_eq!(my_iterable_fav_fruits.next(), Some(&"peach"));
     assert_eq!(my_iterable_fav_fruits.next(), Some(&"raspberry"));
-    assert_eq!(my_iterable_fav_fruits.next(), ???);     // TODO: Step 4
+    // Step 4: 迭代器遍历完所有元素后返回 None
+    assert_eq!(my_iterable_fav_fruits.next(), None);
 }
