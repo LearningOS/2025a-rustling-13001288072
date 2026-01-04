@@ -1,30 +1,15 @@
-// quiz1.rs
-//
-// This is a quiz for the following sections:
-// - Variables
-// - Functions
-// - If
-//
-// Mary is buying apples. The price of an apple is calculated as follows:
-// - An apple costs 2 rustbucks.
-// - If Mary buys more than 40 apples, each apple only costs 1 rustbuck!
-// Write a function that calculates the price of an order of apples given the
-// quantity bought. No hints this time!
-//
-// No hints this time ;)
-
-
-// Put your function here!
+// 计算苹果总价的函数：
+// - 购买数量 ≤40：每个2 rustbucks
+// - 购买数量 >40：每个1 rustbuck
 fn calculate_price_of_apples(number: i32) -> i32 {
-
     if number > 40 {
-        number
+        number * 1 // 超过40个，单价1 rustbuck
     } else {
-        number * 2
+        number * 2 // 40个及以下，单价2 rustbucks
     }
 }
 
-// Don't modify this function!
+// 无需修改的测试函数
 #[test]
 fn verify_test() {
     let price1 = calculate_price_of_apples(35);
