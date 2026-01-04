@@ -1,10 +1,3 @@
-// threads3.rs
-//
-// Execute `rustlings hint threads3` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 use std::sync::mpsc;
 use std::sync::Arc;
 use std::thread;
@@ -30,6 +23,9 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) -> () {
     let qc = Arc::new(q);
     let qc1 = Arc::clone(&qc);
     let qc2 = Arc::clone(&qc);
+    
+    // 1. 为第二个线程克隆sender（mpsc::Sender可克隆，支持多生产者）
+    let tx2 = tx.clone();
 
     thread::spawn(move || {
         for val in &qc1.first_half {
@@ -42,10 +38,13 @@ fn send_tx(q: Queue, tx: mpsc::Sender<u32>) -> () {
     thread::spawn(move || {
         for val in &qc2.second_half {
             println!("sending {:?}", val);
-            tx.send(*val).unwrap();
+            tx2.send(*val).unwrap(); // 2. 使用克隆的sender发送
             thread::sleep(Duration::from_secs(1));
         }
     });
+
+    // 3. 等待子线程完成（关键！否则sender提前销毁，通道关闭）
+    thread::sleep(Duration::from_secs(11)); // 每个线程发5个值，每个间隔1秒，总计稍大于10秒即可
 }
 
 fn main() {
@@ -59,6 +58,10 @@ fn main() {
     for received in rx {
         println!("Got: {}", received);
         total_received += 1;
+        // 4. 提前退出循环（避免rx一直阻塞等待）
+        if total_received == queue_length {
+            break;
+        }
     }
 
     println!("total numbers received: {}", total_received);
