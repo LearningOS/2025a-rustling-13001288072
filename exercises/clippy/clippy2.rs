@@ -1,15 +1,11 @@
-// clippy2.rs
-// 
-// Execute `rustlings hint clippy2` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 fn main() {
     let mut res = 42;
     let option = Some(12);
-    for x in option {
+    
+    // 替换冗余的 for 循环，用 if let 匹配 Option 中的值
+    if let Some(x) = option {
         res += x;
     }
+    
     println!("{}", res);
 }
