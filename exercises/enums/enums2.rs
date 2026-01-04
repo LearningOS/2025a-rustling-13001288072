@@ -1,13 +1,10 @@
-// enums2.rs
-//
-// Execute `rustlings hint enums2` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 #[derive(Debug)]
 enum Message {
-    // TODO: define the different variants used below
+    // 定义带不同关联数据的枚举变体
+    Quit,                          // 无关联数据
+    Echo(String),                  // 关联字符串（元组风格）
+    Move { x: i32, y: i32 },       // 关联结构体风格的数据
+    ChangeColor(u8, u8, u8),       // 关联三个 u8（元组风格，RGB）
 }
 
 impl Message {
