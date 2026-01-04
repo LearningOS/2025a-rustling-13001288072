@@ -1,18 +1,3 @@
-// iterators5.rs
-//
-// Let's define a simple model to track Rustlings exercise progress. Progress
-// will be modelled using a hash map. The name of the exercise is the key and
-// the progress is the value. Two counting functions were created to count the
-// number of exercises with a given progress. Recreate this counting
-// functionality using iterators. Try not to use imperative loops (for, while).
-// Only the two iterator methods (count_iterator and count_collection_iterator)
-// need to be modified.
-//
-// Execute `rustlings hint iterators5` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
 use std::collections::HashMap;
 
 #[derive(Clone, Copy, PartialEq, Eq)]
@@ -33,9 +18,10 @@ fn count_for(map: &HashMap<String, Progress>, value: Progress) -> usize {
 }
 
 fn count_iterator(map: &HashMap<String, Progress>, value: Progress) -> usize {
-    // map is a hashmap with String keys and Progress values.
-    // map = { "variables1": Complete, "from_str": None, ... }
-    todo!();
+    // 核心逻辑：遍历map的值，过滤出等于目标value的元素，统计数量
+    map.values()          // 获取map所有值的迭代器
+       .filter(|&&v| v == value)  // 过滤出与目标值匹配的元素（&&v解引用避免借用）
+       .count()           // 统计过滤后迭代器的元素数量
 }
 
 fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
@@ -51,10 +37,11 @@ fn count_collection_for(collection: &[HashMap<String, Progress>], value: Progres
 }
 
 fn count_collection_iterator(collection: &[HashMap<String, Progress>], value: Progress) -> usize {
-    // collection is a slice of hashmaps.
-    // collection = [{ "variables1": Complete, "from_str": None, ... },
-    //     { "variables2": Complete, ... }, ... ]
-    todo!();
+    // 核心逻辑：嵌套迭代器 - 先遍历collection中的每个map，再遍历map的值，过滤+统计
+    collection.iter()               // 遍历collection中的每个HashMap
+             .flat_map(|map| map.values())  // 展平嵌套迭代器（将多个map的values合并为一个迭代器）
+             .filter(|&&v| v == value)     // 过滤匹配目标值的元素
+             .count()                      // 统计总数
 }
 
 #[cfg(test)]
