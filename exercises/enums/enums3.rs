@@ -1,14 +1,9 @@
-// enums3.rs
-//
-// Address all the TODOs to make the tests pass!
-//
-// Execute `rustlings hint enums3` or use the `hint` watch subcommand for a
-// hint.
-
-// I AM NOT DONE
-
+// 定义 Message 枚举，包含所有需要的变体及关联数据
 enum Message {
-    // TODO: implement the message variant types based on their usage below
+    Quit,                          // 无关联数据：触发退出
+    Echo(String),                  // 关联字符串：触发回显
+    Move(Point),                   // 关联 Point 结构体：触发移动位置
+    ChangeColor(u8, u8, u8),       // 关联 RGB 元组：触发改颜色
 }
 
 struct Point {
@@ -20,7 +15,7 @@ struct State {
     color: (u8, u8, u8),
     position: Point,
     quit: bool,
-    message: String
+    message: String,
 }
 
 impl State {
@@ -32,17 +27,22 @@ impl State {
         self.quit = true;
     }
 
-    fn echo(&mut self, s: String) { self.message = s }
+    fn echo(&mut self, s: String) {
+        self.message = s;
+    }
 
     fn move_position(&mut self, p: Point) {
         self.position = p;
     }
 
     fn process(&mut self, message: Message) {
-        // TODO: create a match expression to process the different message
-        // variants
-        // Remember: When passing a tuple as a function argument, you'll need
-        // extra parentheses: fn function((t, u, p, l, e))
+        // 核心：用 match 匹配不同的 Message 变体，处理状态更新
+        match message {
+            Message::Quit => self.quit(), // 匹配 Quit，调用 quit 方法
+            Message::Echo(s) => self.echo(s), // 匹配 Echo，提取字符串并调用 echo
+            Message::Move(p) => self.move_position(p), // 匹配 Move，提取 Point 并调用 move_position
+            Message::ChangeColor(r, g, b) => self.change_color((r, g, b)), // 匹配 ChangeColor，提取 RGB 并调用 change_color
+        }
     }
 }
 
